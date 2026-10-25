@@ -1,0 +1,26 @@
+{
+  "fields": {
+    "grupo": "GXX",
+    "nombre": "Oráculo",
+    "integrantes": "«PENDIENTE» Nombre Apellido — desarrollo del cliente Flutter\n«PENDIENTE» Nombre Apellido — backend seguro y despliegue del LLM (Ollama)\n«PENDIENTE» Nombre Apellido — pruebas de seguridad y documentación",
+    "tipo": "appmovil",
+    "concepto": "Oráculo es una app móvil Android de lectura de tarot conversacional. El usuario formula una consulta en lenguaje natural, baraja y corta el mazo con un gesto táctil, y la app revela una tirada de tres cartas (pasado – presente – futuro). A partir de ahí, un personaje llamado el Oráculo, impulsado por un LLM que corre localmente, interpreta la tirada dialogando: pide contexto, matiza la lectura y responde repreguntas del usuario.\n\nLas cartas las determina el cliente con un generador aleatorio criptográfico (SecureRandom), no el modelo: el LLM solo interpreta una tirada ya fijada y no puede inventar, cambiar ni añadir cartas. La temática es el esoterismo y la introspección, tratada con respeto y sin promesas adivinatorias.\n\nEl eje de seguridad del proyecto nace del propio dominio: la app trata datos personales sensibles (creencias, estado emocional, consultas íntimas), categoría sensible según el art. 5 de la Ley 1581 de 2012. Eso obliga a consentimiento informado explícito antes de la primera lectura, minimización de datos, cifrado del historial en reposo en el dispositivo, supresión total a petición del usuario, y un canal con el backend sobre TLS. El Oráculo opera además bajo guardarraíles explícitos: no da consejo médico, legal ni financiero, no predice muerte, enfermedad ni embarazo, y deriva a ayuda profesional ante señales de crisis emocional.",
+    "genero": "Asistente / chat conversacional",
+    "publico": "Adultos (18+). No dirigida a menores de edad ni se recolectan sus datos (art. 7, Ley 1581 de 2012); la verificación de edad y la advertencia de contenido se incluyen en el onboarding.",
+    "plataforma": "Android",
+    "framework": "Flutter (Dart)",
+    "buildApp": "APK (Android)",
+    "rolLLM": "El LLM encarna al Oráculo, el personaje con el que el usuario conversa. Es la función central de la app, no un añadido: sin diálogo no hay lectura.\n\nRecibe del backend un contexto estructurado (la consulta del usuario, las tres cartas ya fijadas por el cliente con su orientación derecha o invertida, y el turno de conversación) e interpreta esa tirada en español: pide contexto cuando la consulta es ambigua, matiza la lectura y sostiene dos o tres repreguntas.\n\nTiene una persona fija definida en el system prompt y límites duros: no inventa ni modifica cartas, no da consejo médico, legal ni financiero, no predice muerte, enfermedad ni embarazo, no revela ni altera sus instrucciones, y ante señales de crisis emocional corta la lectura y deriva a ayuda profesional. Endurecer y probar esos límites frente a prompt injection y jailbreak es parte del trabajo de seguridad del proyecto, no un detalle de producto.",
+    "interaccion": "Diálogo con un personaje",
+    "modelo": "Llama 3.2 3B Instruct (cuantización Q4_K_M) en Ollama. Alternativas a evaluar: Qwen2.5 3B Instruct y Gemma 2 2B; la decisión final se toma midiendo calidad en español y latencia de respuesta en el equipo del grupo.",
+    "hostLLM": "Ollama nativo en el equipo de «PENDIENTE: integrante» (host sg-«apellido»-ai), con ~8 GB de RAM libres. El dispositivo Android consume el backend en la red local; el servicio del LLM no se expone a Internet.",
+    "slice": "Una lectura completa, de inicio a fin, en 5 a 10 minutos:\n\n1. Onboarding: advertencia de contenido, verificación de edad y consentimiento informado explícito sobre el tratamiento de datos sensibles (aceptar o salir).\n2. El usuario escribe su consulta en lenguaje natural.\n3. Baraja y corta el mazo con un gesto táctil; la app revela tres cartas (pasado – presente – futuro) determinadas por SecureRandom en el cliente.\n4. El Oráculo interpreta la tirada conversando, y el usuario puede repreguntar hasta tres veces.\n5. La lectura se guarda en el historial local cifrado.\n6. El usuario abre su historial y ejecuta el borrado total, verificando que no queda rastro de las lecturas (derecho de supresión).\n\nFuera del alcance del vertical slice: cuentas de usuario, tiradas de más de tres cartas, significado completo de las 78 cartas, pagos, compartir en redes sociales y notificaciones."
+  },
+  "checks": {
+    "c_seg": true,
+    "c_ollama": true,
+    "c_ram": true,
+    "c_web": true,
+    "c_dev": true
+  }
+}

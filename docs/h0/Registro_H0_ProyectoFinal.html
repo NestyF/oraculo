@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro Hito H0 — Proyecto Final</title>
+<style>
+  :root{
+    --teal:#00B4A6; --teal-d:#00897E; --navy:#0D1B2A; --navy2:#162438;
+    --slate:#5A7A96; --slate-l:#8FA8C0; --border:#E3E9EF; --bg:#F5F7FA;
+    --ink:#0D1B2A; --card:#FFFFFF; --ice:#C8D8E8; --purple:#7B5EA7;
+    --gold:#F0A500; --gold-d:#B37A00; --red:#C0392B; --green:#27AE60;
+    --teal-soft:#D6F2EF;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:Calibri,"Segoe UI",system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:16px}
+  header.top{background:var(--navy);color:#fff;border-radius:14px;padding:22px 24px;margin:8px 0 18px;box-shadow:0 6px 18px rgba(13,27,42,.18)}
+  header.top .eyebrow{color:var(--teal);font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase}
+  header.top h1{font-family:Cambria,Georgia,serif;margin:6px 0 4px;font-size:27px}
+  header.top p{margin:0;color:var(--ice);font-size:14px}
+  .bar{position:sticky;top:0;z-index:20;background:rgba(245,247,250,.92);backdrop-filter:blur(6px);display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);margin-bottom:14px}
+  .btn{border:1px solid var(--border);background:#fff;color:var(--ink);padding:9px 14px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+  .btn:hover{border-color:var(--teal);color:var(--teal-d)}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .btn.primary:hover{background:var(--teal-d);color:#fff}
+  .btn.ghost{background:transparent}
+  .status{margin-left:auto;font-size:12.5px;color:var(--slate)}
+  .status b{color:var(--green)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(13,27,42,.05)}
+  .card h2{font-family:Cambria,Georgia,serif;font-size:18px;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+  .card h2 .n{background:var(--teal);color:#fff;width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex:none}
+  .card .hint{color:var(--slate);font-size:12.5px;margin:0 0 14px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:620px){.grid{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field.full{grid-column:1/-1}
+  label{font-size:12.5px;font-weight:700;color:var(--navy2)}
+  label .req{color:var(--red)}
+  input[type=text],textarea,select{font-family:inherit;font-size:14px;color:var(--ink);background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 11px;width:100%}
+  input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,180,166,.15)}
+  textarea{resize:vertical;min-height:70px}
+  .missing{border-color:var(--red)!important;background:#FFF6F5}
+  .seg{display:flex;gap:10px;flex-wrap:wrap}
+  .seg label{flex:1;min-width:180px;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;font-weight:600;color:var(--ink)}
+  .seg label:hover{border-color:var(--teal)}
+  .seg input{margin-top:2px}
+  .seg label.on{border-color:var(--teal);background:var(--teal-soft)}
+  .seg .t{font-weight:700}
+  .seg .d{display:block;font-weight:400;color:var(--slate);font-size:12px;margin-top:2px}
+  .checks{display:flex;flex-direction:column;gap:9px}
+  .chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px}
+  .chk input{margin-top:3px;flex:none;width:17px;height:17px;accent-color:var(--teal)}
+  .note{background:#0F3A36;color:#fff;border-radius:10px;padding:12px 14px;font-size:13px;margin-top:10px}
+  .note b{color:var(--teal)}
+  .warn{background:#FBF1D6;border:1px solid var(--gold);color:#6b5200;border-radius:10px;padding:10px 13px;font-size:13px;margin:10px 0 0}
+  .approve{background:var(--navy);color:#fff}
+  .approve h2{color:#fff}
+  .approve label{color:var(--ice)}
+  .approve .hint{color:var(--slate-l)}
+  .approve input,.approve textarea,.approve select{background:#0f2133;border-color:#2a3b4f;color:#fff}
+  .meter{height:8px;background:var(--border);border-radius:5px;overflow:hidden;margin:2px 0 0}
+  .meter > i{display:block;height:100%;background:var(--teal);width:0;transition:width .25s}
+  footer.ft{color:var(--slate);font-size:12px;text-align:center;padding:14px 0 28px}
+  .hide{display:none!important}
+  /* ---------- Report (print) ---------- */
+  #report{display:none}
+  @media print{
+    .bar,.card .hint,footer.ft,.no-print{display:none!important}
+    body{background:#fff}
+    .wrap{max-width:100%;padding:0}
+    #app{display:none}
+    #report{display:block}
+  }
+  #report{color:#000;font-size:12px}
+  #report h1{font-family:Cambria,Georgia,serif;font-size:20px;margin:0 0 2px}
+  #report .sub{color:#444;font-size:11px;margin:0 0 10px}
+  #report table{width:100%;border-collapse:collapse;margin:8px 0 14px}
+  #report th,#report td{border:1px solid #bbb;padding:6px 8px;text-align:left;vertical-align:top;font-size:11.5px}
+  #report th{background:#0D1B2A;color:#fff;width:34%;font-weight:600}
+  #report h3{font-family:Cambria,Georgia,serif;font-size:13.5px;margin:14px 0 4px;color:#00897E;border-bottom:1px solid #ddd;padding-bottom:3px}
+  #report .chkline{margin:3px 0;font-size:11.5px}
+  #report .sig{margin-top:22px;display:flex;gap:40px}
+  #report .sig div{flex:1;border-top:1px solid #000;padding-top:4px;font-size:11px;color:#333}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ APP ============ -->
+  <div id="app">
+    <header class="top">
+      <div class="eyebrow">Seguridad Informática · UMNG · Ingeniería Multimedia · 2026-II</div>
+      <h1>Registro del Proyecto Final — Hito H0</h1>
+      <p>Cada grupo registra aquí su proyecto. Guarda tu avance, expórtalo en JSON y entrégalo con el informe en PDF. Nadie empieza a desarrollar antes de la aprobación del docente.</p>
+    </header>
+
+    <div class="bar no-print">
+      <button class="btn primary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+      <button class="btn" onclick="exportJSON()">⬇️ Exportar JSON</button>
+      <button class="btn" onclick="document.getElementById('imp').click()">⬆️ Importar JSON</button>
+      <input id="imp" type="file" accept="application/json,.json" class="hide" onchange="importJSON(this)">
+      <button class="btn ghost" onclick="clearAll()">🗑️ Limpiar</button>
+      <span class="status" id="status">Autoguardado en este navegador · <span id="pct">0%</span> completo</span>
+    </div>
+
+    <!-- 1. Grupo -->
+    <div class="card">
+      <h2><span class="n">1</span> Grupo</h2>
+      <div class="grid">
+        <div class="field"><label>Código de grupo <span class="req">*</span></label><input type="text" data-k="grupo" placeholder="GXX"></div>
+        <div class="field"><label>Nombre del proyecto <span class="req">*</span></label><input type="text" data-k="nombre" placeholder="Título del juego o app"></div>
+        <div class="field full"><label>Integrantes (2 a 3) <span class="req">*</span></label><textarea data-k="integrantes" placeholder="Nombre completo — rol principal (uno por línea)"></textarea></div>
+      </div>
+    </div>
+
+    <!-- 2. Tipo de proyecto -->
+    <div class="card">
+      <h2><span class="n">2</span> Tipo de proyecto</h2>
+      <p class="hint">Elige una sola opción. El proyecto debe ser un <b>videojuego</b> o una <b>app móvil</b>; <b>no se aceptan aplicaciones tradicionales</b> (una webapp o app convencional que no sea un juego ni una app móvil). Un videojuego Unity sí puede publicarse como <i>build</i> web.</p>
+      <div class="seg" id="segTipo">
+        <label data-for="tipo" data-val="videojuego"><input type="radio" name="tipo"><span><span class="t">🎮 Videojuego</span><span class="d">Vertical slice de 5–10 min (Unity 6 o Unreal Engine 5), con diálogo con IA como mecánica</span></span></label>
+        <label data-for="tipo" data-val="appmovil"><input type="radio" name="tipo"><span><span class="t">📱 App móvil</span><span class="d">App instalable (Android/iOS) donde el diálogo con la IA es la función central</span></span></label>
+      </div>
+      <div class="warn">El <i>backend</i> seguro, el LLM propio (Ollama) y todos los controles de seguridad del enunciado aplican igual a ambos tipos. Lo que cambia es el cliente.</div>
+    </div>
+
+    <!-- 3. Concepto -->
+    <div class="card">
+      <h2><span class="n">3</span> Concepto y temática</h2>
+      <div class="grid">
+        <div class="field full"><label>Concepto y temática <span class="req">*</span></label><textarea data-k="concepto" placeholder="¿De qué trata? ¿Qué hace el jugador/usuario? ¿Cuál es la temática?"></textarea></div>
+        <div class="field"><label>Género / categoría <span class="req">*</span></label><select data-k="genero"><option value="">— Selecciona el tipo primero —</option></select></div>
+        <div class="field"><label>Público objetivo</label><input type="text" data-k="publico" placeholder="Ej.: adultos; si incluye menores, indicarlo (art. 7 Ley 1581)"></div>
+      </div>
+    </div>
+
+    <!-- 4. Plataforma y tecnología -->
+    <div class="card">
+      <h2><span class="n">4</span> Plataforma y tecnología</h2>
+      <!-- Videojuego -->
+      <div id="blkGame" class="hide">
+        <div class="grid">
+          <div class="field"><label>Motor <span class="req">*</span></label>
+            <select data-k="motor"><option value="">—</option>
+              <option>Unity 6 (C#)</option>
+              <option>Unreal Engine 5 (C++ / Blueprints)</option>
+            </select></div>
+          <div class="field"><label>Build de entrega</label>
+            <select data-k="buildGame"><option>Web (WebGL, servido por Nginx)</option><option>Windows (escritorio)</option></select></div>
+        </div>
+        <div class="warn">El <i>build</i> Web de Unity (WebGL) sí se acepta porque es un videojuego. Unreal no exporta a web: su <i>build</i> es de escritorio. El <i>build</i> Web obliga a ajustar la CSP de Nginx (Parte 2).</div>
+      </div>
+      <!-- App móvil -->
+      <div id="blkApp" class="hide">
+        <div class="grid">
+          <div class="field"><label>Plataforma <span class="req">*</span></label>
+            <select data-k="plataforma"><option value="">—</option>
+              <option>Android</option><option>iOS</option><option>Android + iOS (multiplataforma)</option>
+            </select></div>
+          <div class="field"><label>Framework / lenguaje <span class="req">*</span></label>
+            <select data-k="framework"><option value="">—</option>
+              <option>Android nativo (Kotlin / Java)</option>
+              <option>iOS nativo (Swift)</option>
+              <option>Flutter (Dart)</option>
+              <option>React Native</option>
+              <option>.NET MAUI</option>
+              <option>Unity (export móvil)</option>
+            </select></div>
+          <div class="field"><label>Build de entrega</label>
+            <select data-k="buildApp"><option>APK (Android)</option><option>IPA (iOS)</option><option>APK + IPA</option></select></div>
+        </div>
+        <div class="warn">El entregable es la app móvil instalable (APK/IPA) + su hash SHA-256, no una aplicación tradicional.</div>
+      </div>
+      <p class="hint" id="techHint">Selecciona el tipo de proyecto (paso 2) para ver las opciones.</p>
+    </div>
+
+    <!-- 5. IA / LLM -->
+    <div class="card">
+      <h2><span class="n">5</span> Inteligencia artificial (LLM propio)</h2>
+      <p class="hint">El modelo lo montan ustedes con Ollama en <code>sg-&lt;apellido&gt;-ai</code>. <b>No se permiten APIs de IA externas.</b></p>
+      <div class="grid">
+        <div class="field full"><label>Rol del LLM en el proyecto <span class="req">*</span></label><textarea data-k="rolLLM" placeholder="¿Qué hace el personaje / asistente con IA? (acompañante, mentor, cliente simulado, tutor, testigo…)"></textarea></div>
+        <div class="field"><label>Tipo de interacción <span class="req">*</span></label>
+          <select data-k="interaccion"><option value="">—</option>
+            <option>Diálogo con un personaje</option>
+            <option>Pistas / orientación progresiva</option>
+            <option>Preguntas y respuestas sobre el juego/app</option>
+            <option>Asesoría o atención simulada</option>
+            <option>Varias de las anteriores</option>
+          </select></div>
+        <div class="field"><label>Modelo propuesto</label><input type="text" data-k="modelo" placeholder="Ej.: Llama 3.2 3B, Qwen2.5 3B, Gemma 2 2B (verificar catálogo Ollama)"></div>
+        <div class="field full"><label>¿Dónde corre el LLM? <span class="req">*</span></label><input type="text" data-k="hostLLM" placeholder="Equipo/host y RAM libre (~8 GB). Ej.: VM Multipass en el PC de Ana, 8 GB"></div>
+      </div>
+    </div>
+
+    <!-- 6. Vertical slice -->
+    <div class="card">
+      <h2><span class="n">6</span> Alcance del vertical slice (5–10 min)</h2>
+      <div class="field full"><label>Describe la escena / flujo jugable o usable <span class="req">*</span></label><textarea data-k="slice" placeholder="La única escena o flujo completo que van a construir y demostrar (5 a 10 minutos)."></textarea></div>
+    </div>
+
+    <!-- 7. Confirmaciones -->
+    <div class="card">
+      <h2><span class="n">7</span> Confirmaciones del grupo</h2>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-c="c_seg"> Entendemos que se califica la <b>seguridad, no el arte</b>.</label>
+        <label class="chk"><input type="checkbox" data-c="c_ollama"> El LLM lo montamos nosotros con <b>Ollama</b>; no usaremos APIs de IA externas.</label>
+        <label class="chk"><input type="checkbox" data-c="c_ram"> Tenemos un equipo con <b>~8 GB de RAM libres</b> para correr el modelo.</label>
+        <label class="chk"><input type="checkbox" data-c="c_web"> El proyecto es un <b>videojuego</b> (incluido <i>build</i> web de Unity) o una <b>app móvil</b>, <b>no una aplicación tradicional</b>.</label>
+        <label class="chk"><input type="checkbox" data-c="c_dev"> No empezaremos a desarrollar antes de la <b>aprobación del docente (H0)</b>.</label>
+      </div>
+    </div>
+
+    <div class="note">📤 <b>Entrega:</b> exporta el JSON y el PDF de esta ficha y cárgalos en <b>Moodle</b>. La retroalimentación del docente se da allí.</div>
+
+    <div class="meter" style="margin-top:16px"><i id="meter"></i></div>
+    <footer class="ft">Herramienta de registro H0 · Seguridad Informática · UMNG 2026-II · Tus datos se guardan solo en este navegador.</footer>
+  </div>
+
+  <!-- ============ REPORT ============ -->
+  <div id="report"></div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "umng_si_h0_v1";
+  var state = { fields:{}, checks:{} };
+
+  var GENEROS = {
+    videojuego: ["Aventura narrativa / novela visual","Simulación de rol o de atención","Juego de decisiones (serious game)","Misterio / detective por diálogo","Puzzle con tutor","Otro (describir en el concepto)"],
+    appmovil: ["Asistente / chat conversacional","Educación / tutor","Simulación de atención (cliente/ciudadano/paciente)","Productividad con asistente","Serious app / toma de decisiones","Otra (describir en el concepto)"]
+  };
+
+  function $(s,c){return (c||document).querySelector(s);}
+  function $all(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));}
+
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} flagSaved(); }
+  var savedTimer;
+  function flagSaved(){
+    var el=$("#status");
+    if(el) el.innerHTML = "Guardado ✓ · <span id='pct'>"+pct()+"%</span> completo";
+    clearTimeout(savedTimer);
+    savedTimer=setTimeout(function(){ var e=$("#status"); if(e) e.innerHTML="Autoguardado en este navegador · <span id='pct'>"+pct()+"%</span> completo"; },1200);
+    var m=$("#meter"); if(m) m.style.width=pct()+"%";
+  }
+
+  // required field keys for completeness
+  var REQ = ["grupo","nombre","integrantes","concepto","genero","rolLLM","interaccion","hostLLM","slice"];
+  function pct(){
+    var done=0, total=REQ.length+1; // +1 for tipo
+    if(state.fields.tipo) done++;
+    REQ.forEach(function(k){ if((state.fields[k]||"").trim()) done++; });
+    // tech requireds depend on tipo
+    return Math.round(done/total*100);
+  }
+
+  function setGeneros(){
+    var sel=$("[data-k='genero']"); if(!sel) return;
+    var cur=state.fields.genero||"";
+    var list=GENEROS[state.fields.tipo]||[];
+    sel.innerHTML = '<option value="">'+(list.length?"— Selecciona —":"— Selecciona el tipo primero —")+'</option>'+
+      list.map(function(g){return '<option'+(g===cur?' selected':'')+'>'+g+'</option>';}).join('');
+  }
+
+  function applyTipo(){
+    var t=state.fields.tipo;
+    $("#blkGame").classList.toggle("hide", t!=="videojuego");
+    $("#blkApp").classList.toggle("hide", t!=="appmovil");
+    $("#techHint").classList.toggle("hide", !!t);
+    $all("#segTipo label").forEach(function(l){ l.classList.toggle("on", l.getAttribute("data-val")===t); });
+    $all("#segTipo input").forEach(function(r){ r.checked = r.parentElement.getAttribute("data-val")===t; });
+    setGeneros();
+  }
+
+  // ---- bind inputs ----
+  function bind(){
+    $all("[data-k]").forEach(function(el){
+      var k=el.getAttribute("data-k");
+      if(el.tagName==="SELECT"||el.type==="text"||el.tagName==="TEXTAREA"){
+        if(state.fields[k]!=null) el.value=state.fields[k];
+        el.addEventListener("input",function(){
+          state.fields[k]=el.value;
+          if(k==="genero"){}
+          save();
+          if(el.classList.contains("missing") && el.value.trim()) el.classList.remove("missing");
+        });
+      }
+    });
+    $all("[data-c]").forEach(function(el){
+      var c=el.getAttribute("data-c");
+      el.checked=!!state.checks[c];
+      el.addEventListener("change",function(){ state.checks[c]=el.checked; save(); });
+    });
+    $all("#segTipo label").forEach(function(l){
+      l.addEventListener("click",function(){
+        state.fields.tipo=l.getAttribute("data-val");
+        applyTipo(); save();
+      });
+    });
+  }
+
+  // ---- report ----
+  function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function nl(s){return esc(s).replace(/\n/g,"<br>");}
+  function val(k,d){var v=state.fields[k]; return (v!=null&&v!=="")?v:(d||"—");}
+  function tipoLabel(){return state.fields.tipo==="videojuego"?"Videojuego":state.fields.tipo==="appmovil"?"App móvil":"—";}
+  function techRows(){
+    if(state.fields.tipo==="videojuego")
+      return "<tr><th>Motor</th><td>"+esc(val("motor"))+"</td></tr>"+
+             "<tr><th>Build</th><td>"+esc(val("buildGame","Web (WebGL, servido por Nginx)"))+"</td></tr>";
+    if(state.fields.tipo==="appmovil")
+      return "<tr><th>Plataforma</th><td>"+esc(val("plataforma"))+"</td></tr>"+
+             "<tr><th>Framework / lenguaje</th><td>"+esc(val("framework"))+"</td></tr>"+
+             "<tr><th>Build</th><td>"+esc(val("buildApp","APK (Android)"))+"</td></tr>";
+    return "<tr><th>Tecnología</th><td>—</td></tr>";
+  }
+  function ck(c,t){return "<div class='chkline'>"+(state.checks[c]?"☑":"☐")+" "+t+"</div>";}
+  function buildReport(){
+    var r=$("#report");
+    r.innerHTML =
+      "<h1>Ficha de Registro — Hito H0</h1>"+
+      "<p class='sub'>Proyecto Final · Seguridad Informática · UMNG · Ingeniería Multimedia · 2026-II</p>"+
+      "<h3>Grupo</h3><table>"+
+        "<tr><th>Código de grupo</th><td>"+esc(val("grupo"))+"</td></tr>"+
+        "<tr><th>Nombre del proyecto</th><td>"+esc(val("nombre"))+"</td></tr>"+
+        "<tr><th>Integrantes</th><td>"+nl(val("integrantes"))+"</td></tr>"+
+      "</table>"+
+      "<h3>Proyecto</h3><table>"+
+        "<tr><th>Tipo</th><td>"+tipoLabel()+"</td></tr>"+
+        "<tr><th>Género / categoría</th><td>"+esc(val("genero"))+"</td></tr>"+
+        "<tr><th>Concepto y temática</th><td>"+nl(val("concepto"))+"</td></tr>"+
+        "<tr><th>Público objetivo</th><td>"+esc(val("publico"))+"</td></tr>"+
+        techRows()+
+      "</table>"+
+      "<h3>Inteligencia artificial (LLM propio)</h3><table>"+
+        "<tr><th>Rol del LLM</th><td>"+nl(val("rolLLM"))+"</td></tr>"+
+        "<tr><th>Tipo de interacción</th><td>"+esc(val("interaccion"))+"</td></tr>"+
+        "<tr><th>Modelo propuesto</th><td>"+esc(val("modelo"))+"</td></tr>"+
+        "<tr><th>Dónde corre</th><td>"+esc(val("hostLLM"))+"</td></tr>"+
+      "</table>"+
+      "<h3>Alcance del vertical slice (5–10 min)</h3><table>"+
+        "<tr><th>Escena / flujo</th><td>"+nl(val("slice"))+"</td></tr>"+
+      "</table>"+
+      "<h3>Confirmaciones del grupo</h3>"+
+        ck("c_seg","Se califica la seguridad, no el arte.")+
+        ck("c_ollama","LLM propio con Ollama; sin APIs de IA externas.")+
+        ck("c_ram","Equipo con ~8 GB de RAM libres para el modelo.")+
+        ck("c_web","Videojuego (incl. build web de Unity) o app móvil; no una aplicación tradicional.")+
+        ck("c_dev","No desarrollar antes de la aprobación (H0).")+
+      "<div class='sig'><div>Firma del grupo</div><div>Fecha de entrega</div></div>";
+  }
+
+  // ---- export / import ----
+  window.exportJSON=function(){
+    buildReport();
+    var data=JSON.stringify(state,null,2);
+    var blob=new Blob([data],{type:"application/json"});
+    var a=document.createElement("a");
+    var g=(state.fields.grupo||"GXX").replace(/[^A-Za-z0-9_-]/g,"");
+    a.href=URL.createObjectURL(blob);
+    a.download=g+"_H0_ProyectoFinal.json";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},100);
+  };
+  window.importJSON=function(input){
+    var f=input.files&&input.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      try{
+        var obj=JSON.parse(rd.result);
+        if(obj&&obj.fields){ state=Object.assign({fields:{},checks:{}},obj); save(); render(); }
+        else alert("El archivo no tiene el formato esperado.");
+      }catch(e){ alert("No se pudo leer el JSON: "+e.message); }
+      input.value="";
+    };
+    rd.readAsText(f);
+  };
+  window.clearAll=function(){
+    if(!confirm("¿Borrar toda la ficha de este navegador?")) return;
+    state={fields:{},checks:{}}; try{localStorage.removeItem(KEY);}catch(e){} render();
+  };
+
+  function render(){
+    // reset DOM values then rebind
+    $all("[data-k]").forEach(function(el){
+      var k=el.getAttribute("data-k");
+      if(el.tagName==="SELECT"||el.type==="text"||el.tagName==="TEXTAREA") el.value=state.fields[k]||"";
+    });
+    $all("[data-c]").forEach(function(el){ el.checked=!!state.checks[el.getAttribute("data-c")]; });
+    applyTipo();
+    flagSaved();
+  }
+
+  // build report just before printing
+  window.addEventListener("beforeprint",buildReport);
+
+  // ---- init ----
+  try{ var raw=localStorage.getItem(KEY); if(raw){ var o=JSON.parse(raw); if(o&&o.fields) state=Object.assign({fields:{},checks:{}},o);} }catch(e){}
+  bind();
+  render();
+})();
+</script>
+</body>
+</html>

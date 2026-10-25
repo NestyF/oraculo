@@ -1,0 +1,46 @@
+# Entregables generados (se exportan desde la ficha, no se versionan)
+*.pdf
+
+# Secretos y configuración local
+.env
+.env.*
+*.pem
+*.key
+*.keystore
+*.jks
+
+# Modelos de IA (pesan GB; se descargan con ollama pull)
+*.gguf
+*.bin
+*.safetensors
+
+# Flutter / Dart
+app/build/
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+*.apk
+*.aab
+*.aar
+
+# Android
+app/android/.gradle/
+app/android/local.properties
+*.iml
+
+# Python (backend)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
